@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Users - Velora Market</title>
+<meta name="description" content="Manage buyer, seller, and admin accounts on Velora Market.">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/dashboard.css">
+<link rel="stylesheet" href="../../css/animations.css">
+</head>
+<body>
+<div class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="dashboard-brand"><a href="../index.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><span class="logo-text">Velora<span>Admin</span></span></a></div>
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-label">Admin</div>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+      <a href="users.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/></svg>Users</a>
+      <a href="vendors.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>Vendors</a>
+      <a href="disputes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 01-4 4H7l-4 4V7a4 4 0 014-4h10a4 4 0 014 4z"/></svg>Disputes</a>
+    </nav>
+    <div class="dashboard-sidebar-footer"><button class="btn btn-ghost btn-full" onclick="Auth.logout()">Sign out</button></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-topbar">
+      <button class="btn btn-secondary btn-icon dashboard-menu-btn" data-sidebar-toggle aria-label="Open menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      <div><div class="text-xs text-sec font-semibold">Identity</div><div class="font-bold" data-dashboard-user-name>Velora Admin</div></div>
+      <div class="nav-actions"><button class="btn btn-secondary btn-sm" onclick="Dashboard.notify('User export queued', 'success')">Export users</button></div>
+    </header>
+
+    <section class="dashboard-content">
+      <div class="dashboard-page-header">
+        <div>
+          <h1>Users</h1>
+          <p>Search accounts, change roles, and control access for buyers and sellers.</p>
+        </div>
+        <div class="dashboard-actions">
+          <button class="btn btn-secondary" onclick="bulkRole('BUYER')">Set buyer</button>
+          <button class="btn btn-primary" onclick="bulkRole('SELLER')">Set seller</button>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">Total users</div><div class="metric-value" id="metric-total">0</div><div class="metric-note">All accounts</div></div>
+        <div class="metric-card"><div class="metric-label">Buyers</div><div class="metric-value" id="metric-buyers">0</div><div class="metric-note">Customer accounts</div></div>
+        <div class="metric-card"><div class="metric-label">Sellers</div><div class="metric-value" id="metric-sellers">0</div><div class="metric-note">Vendor accounts</div></div>
+        <div class="metric-card"><div class="metric-label">Suspended</div><div class="metric-value" id="metric-suspended">0</div><div class="metric-note down">Access disabled</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Account directory</h2>
+          <select class="form-select" id="role-filter" onchange="renderUsers()">
+            <option value="all">All roles</option>
+            <option value="BUYER">Buyers</option>
+            <option value="SELLER">Sellers</option>
+            <option value="ADMIN">Admins</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div class="toolbar">
+            <div class="toolbar-left"><label class="checkbox-group"><input type="checkbox" onchange="toggleSelectAll(this.checked)">Select all</label><button class="btn btn-ghost btn-sm" onclick="suspendSelected()">Suspend</button></div>
+            <div class="toolbar-right"><div class="search-field"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input id="user-search" type="search" placeholder="Search users"></div></div>
+          </div>
+          <div class="table-wrap">
+            <table id="users-table">
+              <thead><tr><th></th><th>User</th><th>Role</th><th>Status</th><th>Orders</th><th>GMV</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody id="users-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="mobile-sidebar-overlay" data-sidebar-close></div>
+<div class="toast-container" id="toast-container"></div>
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/notifications.js"></script>
+<script src="../../js/dashboard/dashboard.js"></script>
+<script>
+let users = [];
+const fallback = [];
+
+if (Dashboard.init('ADMIN')) {
+  loadUsers();
+  Dashboard.bindTableSearch('user-search', 'users-table');
+}
+
+async function loadUsers() {
+  try {
+    const res = await API.get('/api/admin/users');
+    users = res?.success ? res.data : fallback;
+  } catch {
+    users = fallback;
+  }
+  renderUsers();
+}
+
+function renderUsers() {
+  const role = document.getElementById('role-filter').value;
+  const rows = users.filter(u => role === 'all' || u.role === role);
+  document.getElementById('users-body').innerHTML = rows.length ? rows.map(u => `
+    <tr>
+      <td><input type="checkbox" class="user-check" value="${u.id}"></td>
+      <td><div class="d-flex align-center gap-4"><div class="avatar avatar-md">${u.name.charAt(0)}</div><div><div class="font-semibold">${u.name}</div><div class="text-xs text-sec">${u.email}</div></div></div></td>
+      <td><span class="badge ${u.role === 'ADMIN' ? 'badge-dark' : u.role === 'SELLER' ? 'badge-accent' : 'badge-gray'}">${u.role}</span></td>
+      <td>${Dashboard.statusBadge(u.status)}</td>
+      <td>${Dashboard.compact(u.orders)}</td>
+      <td class="font-mono">${Dashboard.money(u.gmv)}</td>
+      <td>${Dashboard.date(u.createdAt)}</td>
+      <td><div class="table-actions"><button class="btn btn-secondary btn-sm" onclick="changeRole('${u.id}')">Role</button><button class="btn btn-ghost btn-sm" onclick="toggleSuspend('${u.id}')">${u.status === 'SUSPENDED' ? 'Restore' : 'Suspend'}</button></div></td>
+    </tr>
+  `).join('') : '<tr><td colspan="8" class="text-sec">No users found.</td></tr>';
+  renderMetrics();
+}
+
+function renderMetrics() {
+  Dashboard.setMetric('metric-total', users.length);
+  Dashboard.setMetric('metric-buyers', users.filter(u => u.role === 'BUYER').length);
+  Dashboard.setMetric('metric-sellers', users.filter(u => u.role === 'SELLER').length);
+  Dashboard.setMetric('metric-suspended', users.filter(u => u.status === 'SUSPENDED').length);
+}
+
+function selectedIds() {
+  return [...document.querySelectorAll('.user-check:checked')].map(el => el.value);
+}
+
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.user-check').forEach(el => el.checked = checked);
+}
+
+function bulkRole(role) {
+  const ids = selectedIds();
+  if (!ids.length) return Dashboard.notify('Select users first', 'warning');
+  users = users.map(u => ids.includes(u.id) ? { ...u, role } : u);
+  renderUsers();
+  Dashboard.notify('Roles updated', 'success');
+}
+
+function suspendSelected() {
+  const ids = selectedIds();
+  if (!ids.length) return Dashboard.notify('Select users first', 'warning');
+  users = users.map(u => ids.includes(u.id) ? { ...u, status: 'SUSPENDED' } : u);
+  renderUsers();
+  Dashboard.notify('Users suspended', 'success');
+}
+
+function changeRole(id) {
+  const order = ['BUYER', 'SELLER', 'ADMIN'];
+  users = users.map(u => u.id === id ? { ...u, role: order[(order.indexOf(u.role) + 1) % order.length] } : u);
+  renderUsers();
+  Dashboard.notify('Role changed', 'success');
+}
+
+function toggleSuspend(id) {
+  users = users.map(u => u.id === id ? { ...u, status: u.status === 'SUSPENDED' ? 'ACTIVE' : 'SUSPENDED' } : u);
+  renderUsers();
+  Dashboard.notify('User status updated', 'success');
+}
+</script>
+</body>
+</html>

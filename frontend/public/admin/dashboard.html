@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - Velora Market</title>
+<meta name="description" content="Platform GMV, vendor approvals, users, and dispute operations for Velora Market admins.">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/dashboard.css">
+<link rel="stylesheet" href="../../css/animations.css">
+</head>
+<body>
+<div class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="dashboard-brand">
+      <a href="../index.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><span class="logo-text">Velora<span>Admin</span></span></a>
+    </div>
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-label">Admin</div>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+      <a href="users.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Users</a>
+      <a href="vendors.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>Vendors</a>
+      <a href="disputes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 01-4 4H7l-4 4V7a4 4 0 014-4h10a4 4 0 014 4z"/></svg>Disputes</a>
+      <div class="dashboard-nav-label">Marketplace</div>
+      <a href="../shop.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>View Shop</a>
+    </nav>
+    <div class="dashboard-sidebar-footer"><button class="btn btn-ghost btn-full" onclick="Auth.logout()">Sign out</button></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-topbar">
+      <button class="btn btn-secondary btn-icon dashboard-menu-btn" data-sidebar-toggle aria-label="Open menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      <div><div class="text-xs text-sec font-semibold">Platform operations</div><div class="font-bold" data-dashboard-user-name>Velora Admin</div></div>
+      <div class="nav-actions">
+        <div class="dropdown" id="notif-dropdown"><button class="nav-icon-btn" id="notif-btn" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge-dot" id="notif-dot" style="display:none"></span></button></div>
+      </div>
+    </header>
+
+    <section class="dashboard-content">
+      <div class="dashboard-page-header">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>GMV, marketplace fees, approvals, and operational risk at a glance.</p>
+        </div>
+        <div class="dashboard-actions">
+          <a href="vendors.html" class="btn btn-primary">Review vendors</a>
+          <a href="disputes.html" class="btn btn-secondary">Open disputes</a>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">Platform GMV</div><div class="metric-value" id="metric-gmv">₹0.00</div><div class="metric-note up">+14.2% month over month</div></div>
+        <div class="metric-card"><div class="metric-label">Platform fees</div><div class="metric-value" id="metric-fees">₹0.00</div><div class="metric-note">10% blended take</div></div>
+        <div class="metric-card"><div class="metric-label">Pending vendors</div><div class="metric-value" id="metric-vendors">0</div><div class="metric-note down">Need review</div></div>
+        <div class="metric-card"><div class="metric-label">Open disputes</div><div class="metric-value" id="metric-disputes">0</div><div class="metric-note">Buyer and seller cases</div></div>
+      </div>
+
+      <div class="dashboard-grid cols-2">
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">GMV trend</h2><span class="badge badge-accent">30 days</span></div>
+          <div class="panel-body"><div class="chart-canvas-wrap"><canvas id="gmv-chart" width="760" height="260"></canvas></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Operations queue</h2></div>
+          <div class="panel-body"><div class="mini-list" id="ops-queue"></div></div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid cols-2 mt-6">
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Pending vendor approvals</h2><a class="btn btn-ghost btn-sm" href="vendors.html">View all</a></div>
+          <div class="panel-body"><div class="mini-list" id="pending-vendors"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Recent disputes</h2><a class="btn btn-ghost btn-sm" href="disputes.html">View all</a></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Case</th><th>Reason</th><th>Status</th><th>Amount</th></tr></thead><tbody id="recent-disputes"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="mobile-sidebar-overlay" data-sidebar-close></div>
+<div class="toast-container" id="toast-container"></div>
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/notifications.js"></script>
+<script src="../../js/dashboard/dashboard.js"></script>
+<script>
+const fallback = {
+  metrics: { gmv: 0, fees: 0, pendingVendors: 0, openDisputes: 0 },
+  gmvSeries: Array(12).fill(0),
+  queue: [
+    { label: 'Vendor applications', count: 0, href: 'vendors.html', badge: 'badge-gray' },
+    { label: 'Open disputes', count: 0, href: 'disputes.html', badge: 'badge-gray' },
+    { label: 'Users under review', count: 0, href: 'users.html', badge: 'badge-gray' }
+  ],
+  vendors: [],
+  disputes: []
+};
+
+if (Dashboard.init('ADMIN')) loadDashboard();
+
+async function loadDashboard() {
+  let data = fallback;
+  try {
+    const res = await API.get('/api/admin/dashboard');
+    if (res?.success) data = res.data;
+  } catch {}
+  renderDashboard(data);
+}
+
+function renderDashboard(data) {
+  Dashboard.setMetric('metric-gmv', Dashboard.money(data.metrics.gmv));
+  Dashboard.setMetric('metric-fees', Dashboard.money(data.metrics.fees));
+  Dashboard.setMetric('metric-vendors', data.metrics.pendingVendors);
+  Dashboard.setMetric('metric-disputes', data.metrics.openDisputes);
+  document.getElementById('ops-queue').innerHTML = data.queue.map(item => `
+    <a class="mini-list-row" href="${item.href}"><div><div class="row-title">${item.label}</div><div class="row-subtitle">Requires admin attention</div></div><span class="badge ${item.badge}">${item.count}</span></a>
+  `).join('');
+  document.getElementById('pending-vendors').innerHTML = data.vendors.length ? data.vendors.map(v => `
+    <div class="vendor-approval-card"><div class="avatar avatar-md">${v.name.charAt(0)}</div><div class="vendor-info"><div class="vendor-name">${v.name}</div><div class="vendor-meta">${v.owner} - ${v.category} - ${Dashboard.date(v.submittedAt)}</div></div><div class="approval-actions"><button class="btn btn-secondary btn-sm" onclick="Dashboard.notify('Vendor opened', 'info')">Open</button></div></div>
+  `).join('') : '<div class="empty-state" style="padding:2rem"><h3>No pending vendors</h3><p>The approval queue is clear.</p></div>';
+  document.getElementById('recent-disputes').innerHTML = data.disputes.length ? data.disputes.map(d => `
+    <tr><td class="font-mono">${d.id}</td><td>${d.reason}</td><td>${Dashboard.statusBadge(d.status)}</td><td class="font-mono">${Dashboard.money(d.amount)}</td></tr>
+  `).join('') : '<tr><td colspan="4" class="text-sec">No manually raised disputes yet.</td></tr>';
+  drawChart(data.gmvSeries || fallback.gmvSeries);
+}
+
+function drawChart(values) {
+  const canvas = document.getElementById('gmv-chart');
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  const pad = 28;
+  const max = Math.max(...values, 1) * 1.15;
+  ctx.clearRect(0, 0, width, height);
+  ctx.strokeStyle = '#DDD6FE';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 4; i++) {
+    const y = pad + i * ((height - pad * 2) / 3);
+    ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(width - pad, y); ctx.stroke();
+  }
+  const barW = (width - pad * 2) / values.length * 0.58;
+  values.forEach((v, i) => {
+    const x = pad + i * ((width - pad * 2) / values.length) + barW * 0.36;
+    const h = (v / max) * (height - pad * 2);
+    ctx.fillStyle = '#7C3AED';
+    ctx.fillRect(x, height - pad - h, barW, h);
+  });
+}
+</script>
+</body>
+</html>

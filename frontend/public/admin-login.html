@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login - Velora Market</title>
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/animations.css">
+<style>
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--gradient-hero);padding:var(--space-6)}
+.admin-card{width:100%;max-width:440px;background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);padding:var(--space-8)}
+.admin-logo{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-8)}
+</style>
+</head>
+<body>
+<main class="admin-card animate-fadeUp">
+  <div class="admin-logo">
+    <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
+    <span class="logo-text">Velora<span>Admin</span></span>
+  </div>
+  <h1 style="font-size:var(--text-3xl);margin-bottom:var(--space-2)">Admin login</h1>
+  <p class="text-sec mb-6">Use the seeded admin account to review stores and reports.</p>
+  <div id="error-banner" class="hidden" style="background:#FEE2E2;border:1px solid #FECACA;border-radius:var(--radius-md);padding:var(--space-3);font-size:var(--text-sm);color:#991B1B;margin-bottom:var(--space-4)"></div>
+  <form id="admin-login-form">
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="email" type="email" value="admin@velora.com"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="password" type="password" value="Admin123!"></div>
+    <button class="btn btn-primary btn-lg btn-full" id="login-btn">Open admin panel</button>
+  </form>
+  <p class="text-xs text-sec mt-4">Default: admin@velora.com / Admin123!</p>
+</main>
+<div class="toast-container" id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+document.getElementById('admin-login-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('login-btn');
+  const error=document.getElementById('error-banner');
+  btn.classList.add('loading');btn.disabled=true;error.classList.add('hidden');
+  try{
+    const res=await Auth.login(document.getElementById('email').value.trim(),document.getElementById('password').value);
+    if(res.success&&Auth.isAdmin()) window.location.href='admin/dashboard.html';
+    else { error.textContent='This account is not an admin account.'; error.classList.remove('hidden'); Auth.clearSession(); }
+  }catch(err){error.textContent=err?.message||'Admin login failed.';error.classList.remove('hidden');}
+  finally{btn.classList.remove('loading');btn.disabled=false;}
+});
+</script>
+</body>
+</html>

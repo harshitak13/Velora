@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velora Market — Discover Unique Products from Independent Sellers</title>
+<meta name="description" content="Shop thousands of unique products from independent sellers. Join Velora Market — the premium multi-vendor marketplace.">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <span class="logo-text">Velora<span>Market</span></span>
+    </a>
+    <div class="nav-search">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="nav-search-input" placeholder="Search products, vendors…" autocomplete="off">
+      <button class="search-btn" onclick="window.location.href='shop.html?q='+encodeURIComponent(document.getElementById('nav-search-input').value.trim())">Search</button>
+    </div>
+    <div class="nav-actions">
+      <div class="dropdown" id="notif-dropdown">
+        <button class="nav-icon-btn" id="notif-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="badge-dot" id="notif-dot" style="display:none"></span>
+        </button>
+      </div>
+      <a href="cart.html" class="nav-icon-btn nav-cart-btn" aria-label="Cart" data-buyer-only>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cart-count" style="display:none">0</span>
+      </a>
+      <div id="nav-user-area">
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Sign up</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="nav-mobile">
+  <div class="nav-mobile-links">
+    <a href="shop.html">Browse Products</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Sign Up</a>
+    <a href="seller/dashboard.html">Seller Dashboard</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge animate-fadeUp"><span>✨</span> 10,000+ products from 500+ sellers</div>
+      <h1 class="animate-fadeUp delay-100">Discover <em>Unique</em> Products<br>from Independent Sellers</h1>
+      <p class="animate-fadeUp delay-200">Shop curated collections from passionate vendors worldwide. Every purchase supports independent creators and small businesses.</p>
+      <div class="hero-actions animate-fadeUp delay-300">
+        <a href="shop.html" class="btn btn-primary btn-lg">Shop Now</a>
+        <a href="register.html?role=seller" class="btn btn-outline btn-lg" data-sell-cta>Start Selling</a>
+      </div>
+      <div class="hero-stats animate-fadeUp delay-400">
+        <div class="hero-stat"><span class="stat-num">10K+</span><span class="stat-lbl">Products</span></div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat"><span class="stat-num">500+</span><span class="stat-lbl">Vendors</span></div>
+        <div class="hero-stat-div"></div>
+        <div class="hero-stat"><span class="stat-num">50K+</span><span class="stat-lbl">Happy Buyers</span></div>
+      </div>
+    </div>
+    <div class="hero-visual animate-fadeUp delay-200">
+      <div class="hero-cards-wrap">
+        <div class="floating-card fc-1 animate-float">
+          <div class="fc-img-wrap"><img class="fc-img" id="hero-img-candle" alt="Artisan candle set" loading="eager"></div>
+          <div class="fc-info"><span class="fc-name">Artisan Candle Set</span><span class="fc-price">₹34.99</span></div>
+        </div>
+        <div class="floating-card fc-2 animate-float delay-200">
+          <div class="fc-img-wrap"><img class="fc-img" id="hero-img-pottery" alt="Handmade pottery" loading="eager"></div>
+          <div class="fc-info"><span class="fc-name">Handmade Pottery</span><span class="fc-price">₹89.00</span></div>
+        </div>
+        <div class="floating-card fc-3 animate-float delay-400">
+          <div class="fc-img-wrap"><img class="fc-img" id="hero-img-scarf" alt="Silk scarf collection" loading="eager"></div>
+          <div class="fc-info"><span class="fc-name">Silk Scarf Collection</span><span class="fc-price">₹55.00</span></div>
+        </div>
+        <div class="hero-badge-float hbf-1"><span>⭐</span> 4.9 Rating</div>
+        <div class="hero-badge-float hbf-2"><span>🚚</span> Fast Shipping</div>
+        <div class="hero-bg-blob"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section-sm" id="categories">
+  <div class="container">
+    <div class="section-header">
+      <div class="subtitle">Browse by category</div>
+      <h2>Shop by Category</h2>
+    </div>
+    <div class="categories-grid" id="categories-grid">
+      <a href="shop.html?category=art" class="category-card">
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#E8DCFF,#C4B5FD)"><span>🎨</span></div>
+        <h3>Art & Crafts</h3>
+        <p>1,240 products</p>
+      </a>
+      <a href="shop.html?category=fashion" class="category-card">
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8)"><span>👗</span></div>
+        <h3>Fashion</h3>
+        <p>3,150 products</p>
+      </a>
+      <a href="shop.html?category=home" class="category-card">
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0)"><span>🏠</span></div>
+        <h3>Home & Living</h3>
+        <p>2,870 products</p>
+      </a>
+      <a href="shop.html?category=jewelry" class="category-card">
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A)"><span>💍</span></div>
+        <h3>Jewelry</h3>
+        <p>980 products</p>
+      </a>
+      <a href="shop.html?category=vintage" class="category-card">
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE)"><span>🕰️</span></div>
+        <h3>Vintage</h3>
+        <p>670 products</p>
+      </a>
+      <a href="shop.html?category=digital" class="category-card">
+        <div class="cat-icon-wrap" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)"><span>💻</span></div>
+        <h3>Digital Goods</h3>
+        <p>420 products</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section" id="featured-products">
+  <div class="container">
+    <div class="section-header">
+      <div class="subtitle">Handpicked for you</div>
+      <h2>Featured Products</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="product-grid-home" id="featured-grid">
+      <!-- JS injected skeletons then real products -->
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+    </div>
+    <div class="text-center mt-6"><a href="shop.html" class="btn btn-outline btn-lg">View All Products</a></div>
+  </div>
+</section>
+
+<!-- FEATURED VENDORS -->
+<section class="section vendors-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="subtitle">Meet our sellers</div>
+      <h2>Top Vendors</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="vendors-scroll" id="vendors-scroll">
+      <div class="vendor-card skeleton-vendor">
+        <div class="skeleton avatar-xl" style="border-radius:50%;margin:0 auto 1rem"></div>
+        <div class="skeleton skeleton-text" style="width:60%;margin:0 auto 0.5rem"></div>
+        <div class="skeleton skeleton-text" style="width:40%;margin:0 auto"></div>
+      </div>
+      <div class="vendor-card skeleton-vendor">
+        <div class="skeleton avatar-xl" style="border-radius:50%;margin:0 auto 1rem"></div>
+        <div class="skeleton skeleton-text" style="width:60%;margin:0 auto 0.5rem"></div>
+        <div class="skeleton skeleton-text" style="width:40%;margin:0 auto"></div>
+      </div>
+      <div class="vendor-card skeleton-vendor">
+        <div class="skeleton avatar-xl" style="border-radius:50%;margin:0 auto 1rem"></div>
+        <div class="skeleton skeleton-text" style="width:60%;margin:0 auto 0.5rem"></div>
+        <div class="skeleton skeleton-text" style="width:40%;margin:0 auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BANNER -->
+<section class="stats-banner">
+  <div class="container">
+    <div class="stats-grid-home">
+      <div class="stat-item"><span class="stat-big" id="stat-products">10,000+</span><span class="stat-desc">Products Listed</span></div>
+      <div class="stat-item"><span class="stat-big" id="stat-vendors">500+</span><span class="stat-desc">Independent Sellers</span></div>
+      <div class="stat-item"><span class="stat-big" id="stat-buyers">50,000+</span><span class="stat-desc">Happy Buyers</span></div>
+      <div class="stat-item"><span class="stat-big">4.9★</span><span class="stat-desc">Average Rating</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner">
+      <h2>Start Selling Today</h2>
+      <p>Join 500+ independent sellers already growing their business on Velora Market. No monthly fees — just a small commission on sales.</p>
+      <div class="cta-actions">
+        <a href="register.html?role=seller" class="btn btn-primary btn-lg" data-sell-cta>Open Your Store</a>
+        <a href="shop.html" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.4);color:#fff">Browse Products</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div><span class="logo-text">Velora<span>Market</span></span></a>
+        <p>The premium multi-vendor marketplace for independent sellers and conscious buyers.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Instagram">📸</a>
+          <a href="#" aria-label="Facebook">f</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="shop.html">All Products</a></li><li><a href="shop.html?category=art">Art & Crafts</a></li><li><a href="shop.html?category=fashion">Fashion</a></li><li><a href="shop.html?category=home">Home & Living</a></li></ul></div>
+      <div class="footer-col" data-sell-cta><h4>Sell</h4><ul><li><a href="register.html?role=seller">Start Selling</a></li><li><a href="seller/dashboard.html">Seller Dashboard</a></li><li><a href="#">Seller Guide</a></li><li><a href="#">Fees & Payments</a></li></ul></div>
+      <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Help Center</a></li><li><a href="#">Contact Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Velora Market. All rights reserved.</span>
+      <span>Made with ❤️ for independent creators</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/socket.js"></script>
+<script>
+// Nav scroll effect
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 10));
+
+// Mobile nav toggle
+document.getElementById('nav-toggle').addEventListener('click', () => {
+  document.getElementById('nav-mobile').classList.toggle('open');
+});
+
+// Nav search redirect
+document.getElementById('nav-search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.value.trim()) {
+    window.location.href = `shop.html?q=${encodeURIComponent(e.target.value.trim())}`;
+  }
+});
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// Load featured products
+async function loadFeatured() {
+  try {
+    const res = await API.get('/api/products?limit=8&sort=popular');
+    if (res.success) renderFeatured(res.data);
+    else renderFeaturedFallback();
+  } catch {
+    renderFeaturedFallback();
+  }
+}
+
+function money(cents) {
+  return ((Number(cents) || 0) / 100).toLocaleString('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function renderFeatured(products) {
+  const grid = document.getElementById('featured-grid');
+  if (!products || !products.length) { renderFeaturedFallback(); return; }
+  grid.innerHTML = products.map(p => `
+    <div class="product-card hover-lift">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${p.images?.[0] || 'https://via.placeholder.com/400x400/F5F0FF/7C3AED?text=Product'}" alt="${p.name}" loading="lazy">
+        <button class="wishlist-btn" onclick="toggleWishlist(event,'${p.id}')" aria-label="Wishlist">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        ${p.comparePrice ? `<span class="badge badge-error badge-discount">SALE</span>` : ''}
+      </div>
+      <div class="card-info">
+        <div class="card-vendor">${p.vendor?.storeName || 'Velora Seller'}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-price-row">
+          <span class="price">${money(p.price)}</span>
+          ${p.comparePrice ? `<span class="price-compare">${money(p.comparePrice)}</span>` : ''}
+        </div>
+        <div class="card-actions">
+          <a href="product.html?id=${p.id}" class="btn btn-secondary btn-sm w-full">View Details</a>
+          <button class="btn btn-primary btn-sm" data-buyer-only onclick="Cart.add('${p.id}',1)" style="flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  Auth.applyRoleUI();
+}
+
+function renderFeaturedFallback() {
+  const items = [
+    {name:'Handcrafted Ceramic Mug',vendor:'PotteryHaven',price:'₹28.00',tag:'POPULAR',icon:'☕'},
+    {name:'Botanical Art Print Set',vendor:'GreenStudio',price:'₹45.00',tag:'NEW',icon:'🖼️'},
+    {name:'Macramé Wall Hanging',vendor:'KnotCraft',price:'₹67.50',tag:'',icon:'🧶'},
+    {name:'Beeswax Candle Bundle',vendor:'HiveGlow',price:'₹32.00',tag:'SALE',icon:'🕯️'},
+    {name:'Leather Journal Cover',vendor:'CraftedByHand',price:'₹54.00',tag:'',icon:'📔'},
+    {name:'Dried Flower Wreath',vendor:'BloomWild',price:'₹39.00',tag:'NEW',icon:'💐'},
+    {name:'Hand-dyed Silk Scarf',vendor:'DyeHouse',price:'₹72.00',tag:'',icon:'🧣'},
+    {name:'Wooden Serving Board',vendor:'GrainWorks',price:'₹48.50',tag:'POPULAR',icon:'🪵'},
+  ];
+  const colors = ['#E8DCFF,#C4B5FD','#D1FAE5,#A7F3D0','#FEF3C7,#FDE68A','#DBEAFE,#BFDBFE','#FCE7F3,#FBCFE8','#EDE9FE,#DDD6FE','#D1FAE5,#6EE7B7','#FEF9C3,#FEF08A'];
+  const grid = document.getElementById('featured-grid');
+  grid.innerHTML = items.map((it,i) => `
+    <div class="product-card hover-lift animate-fadeUp" style="animation-delay:${i*60}ms">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${featuredFallbackImg(it.icon,colors[i])}" alt="${it.name}" loading="lazy">
+        <button class="wishlist-btn" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+        ${it.tag ? `<span class="badge badge-${it.tag==='SALE'?'error':it.tag==='NEW'?'success':'accent'} badge-discount">${it.tag}</span>` : ''}
+      </div>
+      <div class="card-info">
+        <div class="card-vendor">${it.vendor}</div>
+        <div class="card-name">${it.name}</div>
+        <div class="card-price-row"><span class="price">${it.price}</span></div>
+        <div class="card-actions">
+          <a href="product.html" class="btn btn-secondary btn-sm w-full">View Details</a>
+          <button class="btn btn-primary btn-sm" data-buyer-only onclick="Toast.show('Added to cart!','success')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  Auth.applyRoleUI();
+}
+
+function featuredFallbackImg(icon, colors) {
+  const [a,b] = colors.split(',');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#312E81" flood-opacity=".16"/></filter></defs><rect width="900" height="900" rx="42" fill="url(#g)"/><circle cx="690" cy="190" r="112" fill="rgba(255,255,255,.28)"/><circle cx="220" cy="690" r="160" fill="rgba(255,255,255,.18)"/><ellipse cx="450" cy="670" rx="230" ry="46" fill="rgba(30,27,46,.13)"/><g filter="url(#s)"><rect x="230" y="230" width="440" height="380" rx="44" fill="rgba(255,255,255,.78)"/><rect x="270" y="270" width="360" height="300" rx="32" fill="rgba(255,255,255,.46)"/><text x="450" y="472" text-anchor="middle" dominant-baseline="middle" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" font-size="174">${icon}</text></g></svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function hydrateHeroImages() {
+  [
+    ['hero-img-candle', '🕯️', '#FCE7F3,#FBCFE8'],
+    ['hero-img-pottery', '☕', '#E8DCFF,#A78BFA'],
+    ['hero-img-scarf', '🧣', '#D1FAE5,#6EE7B7']
+  ].forEach(([id, icon, colors]) => {
+    const img = document.getElementById(id);
+    if (img) img.src = featuredFallbackImg(icon, colors);
+  });
+}
+
+function renderVendorsFallback() {
+  const vendors = [
+    {name:'PotteryHaven',slug:'artisan',sales:'1.2K sales',emoji:'🏺'},
+    {name:'GreenStudio',slug:'nature',sales:'890 sales',emoji:'🌿'},
+    {name:'KnotCraft',slug:'weave',sales:'2.1K sales',emoji:'🧵'},
+    {name:'HiveGlow',slug:'candle',sales:'650 sales',emoji:'🕯️'},
+    {name:'GrainWorks',slug:'wood',sales:'1.5K sales',emoji:'🪵'},
+    {name:'BloomWild',slug:'floral',sales:'730 sales',emoji:'🌸'},
+  ];
+  const wrap = document.getElementById('vendors-scroll');
+  wrap.innerHTML = vendors.map((v,i) => `
+    <a href="shop.html?vendor=${v.slug}" class="vendor-card animate-fadeUp" style="animation-delay:${i*80}ms">
+      <div class="vendor-avatar">${v.emoji}</div>
+      <h3 class="vendor-name">${v.name}</h3>
+      <p class="vendor-meta">${v.sales}</p>
+      <span class="btn btn-secondary btn-sm" style="margin-top:0.75rem">Visit Store</span>
+    </a>
+  `).join('');
+}
+
+loadFeatured();
+hydrateHeroImages();
+renderVendorsFallback();
+
+function toggleWishlist(e, id) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.toggle('active');
+  Toast.show('Wishlist updated', 'info');
+}
+</script>
+</body>
+</html>

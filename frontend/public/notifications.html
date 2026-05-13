@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications - Velora Market</title>
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><span class="logo-text">Velora<span>Market</span></span></a>
+    <div class="nav-actions"><div id="nav-user-area"><a href="login.html" class="btn btn-secondary btn-sm">Login</a></div></div>
+  </div>
+</nav>
+<main class="container" style="padding-top:var(--space-8);padding-bottom:var(--space-12)">
+  <div class="page-header"><div><h1>Notifications</h1><p>Order, payout, report, and marketplace updates.</p></div><button class="btn btn-secondary" onclick="markRead()">Mark all read</button></div>
+  <div class="panel">
+    <div class="panel-body">
+      <div class="mini-list" id="notification-list">
+        <div class="skeleton" style="height:72px"></div>
+        <div class="skeleton" style="height:72px"></div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="toast-container" id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/notifications.js"></script>
+<script>
+function escapeHtml(value){
+  return String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
+}
+async function loadNotificationPage(){
+  const list=document.getElementById('notification-list');
+  try{
+    const res=await API.get('/api/notifications?limit=50');
+    const items=res?.success?res.data:[];
+    if(!items.length){list.innerHTML='<div class="empty-state"><h3>No notifications</h3><p>You are all caught up.</p></div>';return;}
+    list.innerHTML=items.map(n=>`
+      <div class="mini-list-row">
+        <div><div class="row-title">${escapeHtml(n.title)}</div><div class="row-subtitle">${escapeHtml(n.body)}</div><div class="text-xs text-sec mt-2">${Notifications.timeAgo(n.createdAt)}</div></div>
+        <span class="badge ${n.isRead?'badge-gray':'badge-accent'}">${n.isRead?'Read':'New'}</span>
+      </div>`).join('');
+  }catch{list.innerHTML='<div class="empty-state"><h3>Notifications unavailable</h3><p>Start the backend server and refresh.</p></div>';}
+}
+async function markRead(){await Notifications.markAllRead();Toast.show('Notifications marked read','success');loadNotificationPage();}
+loadNotificationPage();
+</script>
+</body>
+</html>

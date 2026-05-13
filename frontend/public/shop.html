@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Velora Market</title>
+<meta name="description" content="Browse thousands of unique products from independent sellers on Velora Market.">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/shop.css">
+<link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+      <span class="logo-text">Velora<span>Market</span></span>
+    </a>
+    <div class="nav-search">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="nav-search-input" placeholder="Search products…" autocomplete="off">
+      <button class="search-btn" onclick="applySearch()">Search</button>
+    </div>
+    <div class="nav-actions">
+      <div class="dropdown" id="notif-dropdown"><button class="nav-icon-btn" id="notif-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge-dot" id="notif-dot" style="display:none"></span></button></div>
+      <a href="cart.html" class="nav-icon-btn nav-cart-btn" data-buyer-only><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg><span class="cart-count" id="cart-count" style="display:none">0</span></a>
+      <div id="nav-user-area"><a href="login.html" class="btn btn-secondary btn-sm">Login</a><a href="register.html" class="btn btn-primary btn-sm">Sign up</a></div>
+      <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- Category chips -->
+  <div class="category-strip" id="cat-strip" style="margin-top:var(--space-6)">
+    <a href="?category=all" class="category-chip active" data-cat="all"><div class="cat-icon" style="background:var(--color-primary)">🛍️</div><span class="cat-name">All</span></a>
+    <a href="?category=art" class="category-chip" data-cat="art"><div class="cat-icon">🎨</div><span class="cat-name">Art</span></a>
+    <a href="?category=fashion" class="category-chip" data-cat="fashion"><div class="cat-icon">👗</div><span class="cat-name">Fashion</span></a>
+    <a href="?category=home" class="category-chip" data-cat="home"><div class="cat-icon">🏠</div><span class="cat-name">Home</span></a>
+    <a href="?category=jewelry" class="category-chip" data-cat="jewelry"><div class="cat-icon">💍</div><span class="cat-name">Jewelry</span></a>
+    <a href="?category=vintage" class="category-chip" data-cat="vintage"><div class="cat-icon">🕰️</div><span class="cat-name">Vintage</span></a>
+  </div>
+
+  <div class="with-sidebar">
+    <!-- SIDEBAR FILTERS -->
+    <aside class="sidebar">
+      <div class="filter-sidebar">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)">
+          <h3 style="font-size:var(--text-base);margin:0">Filters</h3>
+          <button class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear all</button>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-title" onclick="toggleFilter(this)">Price Range <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div style="margin-bottom:var(--space-3)">
+            <input type="range" class="range-slider" id="price-max" min="0" max="500" value="500" oninput="document.getElementById('price-max-val').textContent='₹'+this.value">
+            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-sec);margin-top:var(--space-2)"><span>₹0</span><span id="price-max-val">₹500</span></div>
+          </div>
+          <div class="price-range-inputs">
+            <input type="number" id="price-min" placeholder="Min" min="0">
+            <input type="number" id="price-max-input" placeholder="Max" min="0">
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-title" onclick="toggleFilter(this)">Rating <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="filter-options">
+            <label class="filter-option"><input type="radio" name="rating" value="4"> <span>⭐⭐⭐⭐ & up</span></label>
+            <label class="filter-option"><input type="radio" name="rating" value="3"> <span>⭐⭐⭐ & up</span></label>
+            <label class="filter-option"><input type="radio" name="rating" value="2"> <span>⭐⭐ & up</span></label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="filter-title" onclick="toggleFilter(this)">Availability <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox" id="in-stock"> In stock</label>
+            <label class="filter-option"><input type="checkbox" id="on-sale"> On sale</label>
+          </div>
+        </div>
+
+        <div style="margin-top:var(--space-5)">
+          <button class="btn btn-primary btn-full" onclick="applyFilters()">Apply Filters</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- Active filters -->
+      <div class="active-filters" id="active-filters"></div>
+
+      <!-- Topbar -->
+      <div class="shop-topbar">
+        <span class="result-count" id="result-count">Loading products…</span>
+        <div class="shop-topbar-right">
+          <select class="sort-select" id="sort-select" onchange="applySort()">
+            <option value="newest">Newest</option>
+            <option value="popular">Most Popular</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+          <div class="view-toggle">
+            <button class="view-btn active" id="grid-btn" onclick="setView('grid')" title="Grid view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+            <button class="view-btn" id="list-btn" onclick="setView('list')" title="List view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid" id="product-grid">
+        <!-- Skeletons -->
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/socket.js"></script>
+<script>
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 10));
+document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-mobile')?.classList.toggle('open'));
+
+// State
+let state = { page: 1, limit: 24, sort: 'newest', category: '', minPrice: '', maxPrice: '', rating: '', q: '', view: 'grid', inStock: false, onSale: false };
+let totalPages = 1;
+function money(cents){return ((Number(cents)||0)/100).toLocaleString('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:2,maximumFractionDigits:2});}
+
+// Read URL params
+function readParams() {
+  const p = new URLSearchParams(window.location.search);
+  state.q        = p.get('q') || '';
+  state.category = p.get('category') || '';
+  state.sort     = p.get('sort') || 'newest';
+  state.page     = parseInt(p.get('page')) || 1;
+  state.minPrice = p.get('minPrice') || '';
+  state.maxPrice = p.get('maxPrice') || '';
+  state.rating   = p.get('rating') || '';
+  state.inStock  = p.get('inStock') === 'true';
+  state.onSale   = p.get('onSale') === 'true';
+  if (state.q) document.getElementById('nav-search-input').value = state.q;
+  if (state.sort) document.getElementById('sort-select').value = state.sort;
+  if (state.minPrice) document.getElementById('price-min').value = state.minPrice;
+  if (state.maxPrice) document.getElementById('price-max-input').value = state.maxPrice;
+  if (state.rating) {
+    const ratingInput = document.querySelector(`input[name="rating"][value="${state.rating}"]`);
+    if (ratingInput) ratingInput.checked = true;
+  }
+  document.getElementById('in-stock').checked = state.inStock;
+  document.getElementById('on-sale').checked = state.onSale;
+  if (state.category && state.category !== 'all') {
+    document.querySelectorAll('.category-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === state.category);
+    });
+  }
+  renderActiveFilters();
+}
+
+function pushState() {
+  const p = new URLSearchParams();
+  if (state.q) p.set('q', state.q);
+  if (state.category && state.category !== 'all') p.set('category', state.category);
+  if (state.sort !== 'newest') p.set('sort', state.sort);
+  if (state.minPrice) p.set('minPrice', state.minPrice);
+  if (state.maxPrice) p.set('maxPrice', state.maxPrice);
+  if (state.rating) p.set('rating', state.rating);
+  if (state.inStock) p.set('inStock', 'true');
+  if (state.onSale) p.set('onSale', 'true');
+  if (state.page > 1) p.set('page', state.page);
+  history.pushState(null, '', '?' + p.toString());
+}
+
+async function loadProducts() {
+  const grid = document.getElementById('product-grid');
+  // Show skeletons
+  grid.innerHTML = Array(state.limit).fill(`<div class="skeleton-card"><div class="skeleton skeleton-img"></div><div style="padding:1rem"><div class="skeleton skeleton-text" style="width:40%"></div><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div>`).join('');
+
+  try {
+    const params = { page: state.page, limit: state.limit, sort: state.sort };
+    if (state.q) params.search = state.q;
+    if (state.category && state.category !== 'all') params.category = state.category;
+    if (state.minPrice) params.minPrice = state.minPrice;
+    if (state.maxPrice) params.maxPrice = state.maxPrice;
+    if (state.rating) params.rating = state.rating;
+    if (state.inStock) params.inStock = 'true';
+    if (state.onSale) params.onSale = 'true';
+
+    const res = await API.get('/api/products', params);
+    if (res?.success) {
+      renderProducts(res.data, res.meta);
+    } else {
+      renderFallback();
+    }
+  } catch {
+    renderFallback();
+  }
+}
+
+function renderProducts(products, meta) {
+  const grid = document.getElementById('product-grid');
+  const countEl = document.getElementById('result-count');
+  totalPages = Math.ceil((meta?.total || products.length) / state.limit);
+  countEl.innerHTML = `<strong>${meta?.total || products.length}</strong> products found`;
+
+  if (!products.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><h3>No products found</h3><p>Try adjusting your filters or search term.</p><a href="shop.html" class="btn btn-primary btn-lg" style="margin-top:1rem">Clear filters</a></div>`;
+    return;
+  }
+  grid.innerHTML = products.map((p, i) => productCard(p, i)).join('');
+  Auth.applyRoleUI();
+  renderPagination();
+}
+
+function renderFallback() {
+  const fallback = [
+    {id:'1',name:'Handcrafted Ceramic Mug',vendorName:'PotteryHaven',price:2800,comparePrice:3500,color:'#E8DCFF,#C4B5FD',emoji:'☕',tag:'POPULAR'},
+    {id:'2',name:'Botanical Art Print Set',vendorName:'GreenStudio',price:4500,comparePrice:null,color:'#D1FAE5,#A7F3D0',emoji:'🌿',tag:'NEW'},
+    {id:'3',name:'Macramé Wall Hanging',vendorName:'KnotCraft',price:6750,comparePrice:null,color:'#FEF3C7,#FDE68A',emoji:'🪢',tag:''},
+    {id:'4',name:'Beeswax Candle Bundle',vendorName:'HiveGlow',price:3200,comparePrice:4000,color:'#DBEAFE,#BFDBFE',emoji:'🕯️',tag:'SALE'},
+    {id:'5',name:'Leather Journal Cover',vendorName:'CraftedByHand',price:5400,comparePrice:null,color:'#FCE7F3,#FBCFE8',emoji:'📔',tag:''},
+    {id:'6',name:'Dried Flower Wreath',vendorName:'BloomWild',price:3900,comparePrice:null,color:'#EDE9FE,#DDD6FE',emoji:'💐',tag:'NEW'},
+    {id:'7',name:'Hand-dyed Silk Scarf',vendorName:'DyeHouse',price:7200,comparePrice:8500,color:'#D1FAE5,#6EE7B7',emoji:'🧣',tag:''},
+    {id:'8',name:'Wooden Serving Board',vendorName:'GrainWorks',price:4850,comparePrice:null,color:'#FEF9C3,#FEF08A',emoji:'🪵',tag:'POPULAR'},
+    {id:'9',name:'Silver Hoop Earrings',vendorName:'MetalMuse',price:3300,comparePrice:null,color:'#F3F4F6,#E5E7EB',emoji:'💍',tag:''},
+    {id:'10',name:'Vintage Postcard Set',vendorName:'TimeCapsule',price:1800,comparePrice:null,color:'#FEF3C7,#FDE68A',emoji:'📮',tag:''},
+    {id:'11',name:'Organic Tea Collection',vendorName:'LeafLore',price:2600,comparePrice:null,color:'#D1FAE5,#A7F3D0',emoji:'🍵',tag:'NEW'},
+    {id:'12',name:'Woven Basket Set',vendorName:'WeaveCraft',price:5600,comparePrice:6900,color:'#EDE9FE,#DDD6FE',emoji:'🧺',tag:'SALE'},
+  ];
+  const grid = document.getElementById('product-grid');
+  document.getElementById('result-count').innerHTML = `<strong>${fallback.length}</strong> products found`;
+  grid.innerHTML = fallback.map((p, i) => `
+    <div class="product-card hover-lift animate-fadeUp" style="animation-delay:${i*40}ms">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${fallbackImg(p.name,p.emoji,p.color)}" alt="${p.name}" loading="lazy" style="height:220px;object-fit:cover">
+        <button class="wishlist-btn" onclick="this.classList.toggle('active');Toast.show('Wishlist updated','info')" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+        ${p.tag ? `<span class="badge badge-${p.tag==='SALE'?'error':p.tag==='NEW'?'success':'accent'} badge-discount">${p.tag}</span>` : ''}
+      </div>
+      <div class="card-info">
+        <div class="card-vendor">${p.vendorName}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-price-row">
+          <span class="price">${money(p.price)}</span>
+          ${p.comparePrice ? `<span class="price-compare">${money(p.comparePrice)}</span>` : ''}
+        </div>
+        <div class="stars" style="margin-bottom:var(--space-3)">⭐⭐⭐⭐${Math.random()>0.5?'⭐':''} <span style="font-size:var(--text-xs);color:var(--color-text-sec);margin-left:4px">(${Math.floor(Math.random()*200+10)})</span></div>
+        <div class="card-actions">
+          <a href="product.html?id=${p.id}" class="btn btn-secondary btn-sm w-full">View Details</a>
+          <button class="btn btn-primary btn-sm" data-buyer-only onclick="Cart.add('${p.id}',1,{name:'${p.name}',price:${p.price},vendorName:'${p.vendorName}'})" title="Add to cart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  Auth.applyRoleUI();
+}
+
+function productCard(p, i) {
+  const image = p.images?.[0] || fallbackImg(p.name, '🛍️', '#F5F0FF,#DDD6FE');
+  return `
+    <div class="product-card hover-lift animate-fadeUp" style="animation-delay:${i*40}ms">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${image}" alt="${p.name}" loading="lazy" style="height:220px;object-fit:cover">
+        <button class="wishlist-btn" onclick="this.classList.toggle('active');Toast.show('Wishlist updated','info')" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+        ${p.comparePrice ? `<span class="badge badge-error badge-discount">SALE</span>` : ''}
+      </div>
+      <div class="card-info">
+        <div class="card-vendor">${p.vendor?.storeName||'Velora Seller'}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-price-row"><span class="price">${money(p.price)}</span>${p.comparePrice?`<span class="price-compare">${money(p.comparePrice)}</span>`:''}</div>
+        <div class="card-actions">
+          <a href="product.html?id=${p.id}" class="btn btn-secondary btn-sm w-full">View</a>
+          <button class="btn btn-primary btn-sm" data-buyer-only onclick="Cart.add('${p.id}',1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function fallbackImg(label, icon, colors) {
+  const [a, b] = String(colors || '#F5F0FF,#DDD6FE').split(',');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${a}"/><stop offset="1" stop-color="${b || a}"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#312E81" flood-opacity=".16"/></filter></defs><rect width="900" height="900" rx="42" fill="url(#g)"/><circle cx="690" cy="190" r="112" fill="rgba(255,255,255,.28)"/><circle cx="220" cy="690" r="160" fill="rgba(255,255,255,.18)"/><ellipse cx="450" cy="670" rx="230" ry="46" fill="rgba(30,27,46,.13)"/><g filter="url(#s)"><rect x="230" y="230" width="440" height="380" rx="44" fill="rgba(255,255,255,.78)"/><rect x="270" y="270" width="360" height="300" rx="32" fill="rgba(255,255,255,.46)"/><text x="450" y="472" text-anchor="middle" dominant-baseline="middle" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" font-size="174">${icon}</text></g></svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function renderPagination() {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+  let html = `<button class="page-btn" onclick="goPage(${state.page-1})" ${state.page===1?'disabled':''}>←</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - state.page) <= 1) {
+      html += `<button class="page-btn ${i===state.page?'active':''}" onclick="goPage(${i})">${i}</button>`;
+    } else if (Math.abs(i - state.page) === 2) {
+      html += `<span class="page-btn" style="cursor:default">…</span>`;
+    }
+  }
+  html += `<button class="page-btn" onclick="goPage(${state.page+1})" ${state.page===totalPages?'disabled':''}>→</button>`;
+  el.innerHTML = html;
+}
+
+function goPage(p) { if (p < 1 || p > totalPages) return; state.page = p; pushState(); loadProducts(); window.scrollTo(0,0); }
+function applySearch() { state.q = document.getElementById('nav-search-input').value.trim(); state.page = 1; pushState(); loadProducts(); }
+function applySort() { state.sort = document.getElementById('sort-select').value; state.page = 1; pushState(); loadProducts(); }
+function applyFilters() {
+  state.minPrice = document.getElementById('price-min').value || '';
+  state.maxPrice = document.getElementById('price-max-input').value || document.getElementById('price-max').value || '';
+  state.rating = document.querySelector('input[name="rating"]:checked')?.value || '';
+  state.inStock = document.getElementById('in-stock').checked;
+  state.onSale = document.getElementById('on-sale').checked;
+  state.page = 1;
+  renderActiveFilters();
+  pushState();
+  loadProducts();
+}
+function clearFilters() {
+  state = {...state, q:'', category:'', minPrice:'', maxPrice:'', rating:'', page:1, inStock:false, onSale:false};
+  document.getElementById('nav-search-input').value = '';
+  document.getElementById('price-min').value = '';
+  document.getElementById('price-max-input').value = '';
+  document.getElementById('price-max').value = 500;
+  document.getElementById('price-max-val').textContent = '₹500';
+  document.querySelectorAll('input[name="rating"]').forEach(el => el.checked = false);
+  document.getElementById('in-stock').checked = false;
+  document.getElementById('on-sale').checked = false;
+  document.querySelectorAll('.category-chip').forEach(c => c.classList.toggle('active', c.dataset.cat === 'all'));
+  renderActiveFilters();
+  history.pushState(null,'','shop.html');
+  loadProducts();
+}
+function setView(v) { state.view = v; document.getElementById('product-grid').classList.toggle('list-view', v==='list'); document.getElementById('grid-btn').classList.toggle('active', v==='grid'); document.getElementById('list-btn').classList.toggle('active', v==='list'); }
+function toggleFilter(btn) { btn.nextElementSibling?.classList.toggle('hidden'); }
+
+function renderActiveFilters() {
+  const tags = [];
+  if (state.q) tags.push(`Search: ${state.q}`);
+  if (state.category && state.category !== 'all') tags.push(`Category: ${state.category}`);
+  if (state.minPrice) tags.push(`Min ₹${state.minPrice}`);
+  if (state.maxPrice && state.maxPrice !== '500') tags.push(`Max ₹${state.maxPrice}`);
+  if (state.rating) tags.push(`${state.rating}+ stars`);
+  if (state.inStock) tags.push('In stock');
+  if (state.onSale) tags.push('On sale');
+  document.getElementById('active-filters').innerHTML = tags.map(t => `<span class="filter-tag">${t}</span>`).join('');
+}
+
+document.getElementById('nav-search-input').addEventListener('keydown', e => { if (e.key==='Enter') applySearch(); });
+
+readParams();
+loadProducts();
+</script>
+</body>
+</html>
