@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Velora Market</title>
+<meta name="description" content="Sign in to your Velora Market account.">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/animations.css">
+<style>
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.auth-visual {
+  background: var(--gradient-hero);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-12);
+  position: relative;
+  overflow: hidden;
+}
+.auth-visual::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.auth-visual-content { position: relative; z-index: 1; text-align: center; }
+.auth-visual h2 { font-size: var(--text-3xl); margin-bottom: var(--space-4); color: var(--color-text); }
+.auth-visual p  { color: var(--color-text-sec); max-width: 320px; margin: 0 auto; }
+.auth-visual-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+.auth-feat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+.auth-feat-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.auth-feat-text { font-size: var(--text-sm); font-weight: 600; color: var(--color-text); }
+.auth-feat-sub  { font-size: var(--text-xs); color: var(--color-text-sec); }
+.auth-form-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-12);
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+.auth-logo { margin-bottom: var(--space-8); }
+.auth-logo a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+}
+.auth-logo .logo-mark {
+  width: 36px; height: 36px;
+  background: var(--gradient-accent);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.auth-logo .logo-text {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+.auth-logo .logo-text span { color: var(--color-accent); }
+.auth-title { font-size: var(--text-3xl); margin-bottom: var(--space-2); }
+.auth-subtitle { color: var(--color-text-sec); margin-bottom: var(--space-8); }
+.auth-form { display: flex; flex-direction: column; gap: var(--space-5); }
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-sec);
+  font-size: var(--text-xs);
+  margin: var(--space-2) 0;
+}
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+.auth-footer { text-align: center; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-sec); }
+.auth-footer a { color: var(--color-accent); font-weight: 600; }
+.forgot-link {
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  text-align: right;
+  display: block;
+  margin-top: -var(--space-3);
+}
+@media (max-width: 768px) {
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-visual { display: none; }
+  .auth-form-side { padding: var(--space-6); max-width: 100%; }
+}
+</style>
+</head>
+<body>
+<main class="auth-page">
+  <!-- Visual Side -->
+  <div class="auth-visual">
+    <div class="auth-visual-content animate-fadeUp">
+      <h2>Welcome Back to<br><em style="color:var(--color-accent)">Velora Market</em></h2>
+      <p>Your destination for unique products from independent creators worldwide.</p>
+      <div class="auth-visual-cards">
+        <div class="auth-feat animate-fadeUp delay-200">
+          <div class="auth-feat-icon">🛒</div>
+          <div><div class="auth-feat-text">Smart Shopping</div><div class="auth-feat-sub">Track orders in real-time</div></div>
+        </div>
+        <div class="auth-feat animate-fadeUp delay-300">
+          <div class="auth-feat-icon">🔒</div>
+          <div><div class="auth-feat-text">Secure Payments</div><div class="auth-feat-sub">Protected by Stripe</div></div>
+        </div>
+        <div class="auth-feat animate-fadeUp delay-400">
+          <div class="auth-feat-icon">⭐</div>
+          <div><div class="auth-feat-text">50,000+ Reviews</div><div class="auth-feat-sub">Real buyer feedback</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Form Side -->
+  <div class="auth-form-side animate-fadeUp">
+    <div class="auth-logo">
+      <a href="index.html">
+        <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        <span class="logo-text">Velora<span>Market</span></span>
+      </a>
+    </div>
+    <h1 class="auth-title">Sign in</h1>
+    <p class="auth-subtitle">New here? <a href="register.html">Create an account →</a></p>
+
+    <div id="error-banner" class="hidden" style="background:#FEE2E2;border:1px solid #FECACA;border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:#991B1B;margin-bottom:var(--space-4)"></div>
+
+    <form class="auth-form" id="login-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="email">Email address</label>
+        <div class="input-group">
+          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-error" id="email-error"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="input-group">
+          <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <input type="password" id="password" name="password" class="form-input has-right" placeholder="Your password" required autocomplete="current-password">
+          <button type="button" class="input-icon-right" id="toggle-pw" aria-label="Toggle password">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="form-error" id="password-error"></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <label class="checkbox-group">
+          <input type="checkbox" id="remember" name="remember">
+          <span style="font-size:var(--text-sm);color:var(--color-text-sec)">Remember me</span>
+        </label>
+        <a href="#" class="forgot-link" style="margin-top:0">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-full" id="login-btn">Sign in</button>
+    </form>
+
+    <div class="auth-footer">
+      <span>Don't have an account? <a href="register.html">Sign up for free</a></span>
+    </div>
+  </div>
+</main>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+// Redirect if already logged in
+if (Auth.isLoggedIn()) window.location.href = 'index.html';
+
+// Toggle password
+document.getElementById('toggle-pw').addEventListener('click', function() {
+  const pw = document.getElementById('password');
+  pw.type = pw.type === 'password' ? 'text' : 'password';
+});
+
+// Form submit
+document.getElementById('login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('login-btn');
+  const errorBanner = document.getElementById('error-banner');
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  // Validate
+  let valid = true;
+  document.getElementById('email-error').textContent = '';
+  document.getElementById('password-error').textContent = '';
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+    valid = false;
+  }
+  if (!password || password.length < 6) {
+    document.getElementById('password-error').textContent = 'Password must be at least 6 characters.';
+    valid = false;
+  }
+  if (!valid) return;
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+  errorBanner.classList.add('hidden');
+
+  try {
+    const result = await Auth.login(email, password);
+    if (result.success) {
+      Toast.show('Welcome back!', 'success');
+      const user = Auth.getUser();
+      const redirect = new URLSearchParams(window.location.search).get('redirect') || (user?.role === 'ADMIN' ? 'admin/dashboard.html' : user?.role === 'SELLER' ? 'seller/dashboard.html' : 'index.html');
+      setTimeout(() => window.location.href = redirect, 600);
+    } else {
+      errorBanner.textContent = result.error || 'Invalid email or password.';
+      errorBanner.classList.remove('hidden');
+    }
+  } catch (err) {
+    errorBanner.textContent = err?.message || 'Something went wrong. Please try again.';
+    errorBanner.classList.remove('hidden');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

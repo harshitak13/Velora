@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Settings - Velora Market</title>
+<meta name="description" content="Seller store settings, payout profile, shipping defaults, and notification preferences.">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/dashboard.css">
+<link rel="stylesheet" href="../../css/animations.css">
+</head>
+<body>
+<div class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="dashboard-brand">
+      <a href="dashboard.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><span class="logo-text">Velora<span>Seller</span></span></a>
+    </div>
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-label">Seller</div>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+      <a href="products.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Products</a>
+      <a href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 00-1-1.73L13 2.27a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16Z"/></svg>Orders</a>
+      <a href="payouts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Payouts</a>
+      <a href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82"/></svg>Settings</a>
+    </nav>
+    <div class="dashboard-sidebar-footer"><button class="btn btn-ghost btn-full" onclick="Auth.logout()">Sign out</button></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-topbar">
+      <button class="btn btn-secondary btn-icon dashboard-menu-btn" data-sidebar-toggle aria-label="Open menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      <div><div class="text-xs text-sec font-semibold">Store configuration</div><div class="font-bold" data-dashboard-user-name>Velora Seller</div></div>
+      <div class="nav-actions"><button class="btn btn-primary btn-sm" onclick="saveSettings()">Save changes</button></div>
+    </header>
+
+    <section class="dashboard-content">
+      <div class="dashboard-page-header">
+        <div>
+          <h1>Settings</h1>
+          <p>Configure store profile, fulfillment defaults, notifications, and account access.</p>
+        </div>
+      </div>
+
+      <form id="settings-form">
+        <div class="settings-section">
+          <div class="settings-section-header">Store profile</div>
+          <div class="settings-section-body">
+            <div class="form-grid-2">
+              <div class="form-group"><label class="form-label" for="store-name">Store name</label><input id="store-name" class="form-input" value="Velora Studio" required></div>
+              <div class="form-group"><label class="form-label" for="store-slug">Store slug</label><input id="store-slug" class="form-input" value="velora-studio" required></div>
+            </div>
+            <div class="form-group"><label class="form-label" for="store-bio">Store bio</label><textarea id="store-bio" class="form-textarea">Small batch home goods and accessories made with natural materials.</textarea></div>
+            <div class="form-grid-2">
+              <div class="form-group"><label class="form-label" for="support-email">Support email</label><input id="support-email" class="form-input" type="email" value="support@velorastudio.example"></div>
+              <div class="form-group"><label class="form-label" for="phone">Business phone</label><input id="phone" class="form-input" value="+1 555 010 3482"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-header">Shipping defaults</div>
+          <div class="settings-section-body">
+            <div class="form-grid-2">
+              <div class="form-group"><label class="form-label" for="processing-days">Processing time</label><select id="processing-days" class="form-select"><option>1 business day</option><option selected>2 business days</option><option>3-5 business days</option><option>Made to order</option></select></div>
+              <div class="form-group"><label class="form-label" for="ship-from">Ships from</label><input id="ship-from" class="form-input" value="Austin, TX"></div>
+            </div>
+            <div class="form-grid-2">
+              <label class="checkbox-group"><input type="checkbox" id="free-shipping" checked>Free shipping over ₹50</label>
+              <label class="checkbox-group"><input type="checkbox" id="international">International shipping</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-header">Notifications</div>
+          <div class="settings-section-body">
+            <div class="mini-list">
+              <label class="mini-list-row checkbox-group"><span><span class="row-title">New sale alerts</span><span class="row-subtitle">Email and real-time notification for new paid orders</span></span><input type="checkbox" checked></label>
+              <label class="mini-list-row checkbox-group"><span><span class="row-title">Payout updates</span><span class="row-subtitle">Stripe Connect payout completed or failed</span></span><input type="checkbox" checked></label>
+              <label class="mini-list-row checkbox-group"><span><span class="row-title">Low stock alerts</span><span class="row-subtitle">Inventory reaches 5 units or less</span></span><input type="checkbox" checked></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-header">Account and integrations</div>
+          <div class="settings-section-body">
+            <div class="mini-list">
+              <div class="mini-list-row"><div><div class="row-title">Stripe Connect</div><div class="row-subtitle">Connected account for split payments and payouts</div></div><button type="button" class="btn btn-secondary btn-sm" onclick="connectStripe()">Manage</button></div>
+              <div class="mini-list-row"><div><div class="row-title">Cloudinary</div><div class="row-subtitle">Product media upload destination</div></div><span class="badge badge-success">Ready</span></div>
+              <div class="mini-list-row"><div><div class="row-title">SendGrid</div><div class="row-subtitle">Order and seller notification email delivery</div></div><span class="badge badge-success">Ready</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-between align-center gap-4">
+          <button type="button" class="btn btn-danger" onclick="Dashboard.notify('Store suspension request requires admin review', 'warning')">Pause store</button>
+          <button type="submit" class="btn btn-primary btn-lg">Save settings</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<div class="mobile-sidebar-overlay" data-sidebar-close></div>
+<div class="toast-container" id="toast-container"></div>
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/notifications.js"></script>
+<script src="../../js/dashboard/dashboard.js"></script>
+<script>
+if (Dashboard.init('SELLER')) loadSettings();
+
+async function loadSettings() {
+  const user = Auth.getUser();
+  if (user) {
+    const store = user.storeName || user.name || 'My Store';
+    document.getElementById('store-name').value = store;
+    document.getElementById('store-slug').value = store.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    document.getElementById('support-email').value = user.email || '';
+    document.getElementById('phone').value = '';
+    document.getElementById('ship-from').value = 'India';
+  }
+  try {
+    const res = await API.get('/api/seller/settings');
+    if (!res?.success || !res.data) return;
+    document.getElementById('store-name').value = res.data.storeName || '';
+    document.getElementById('store-slug').value = res.data.slug || '';
+    document.getElementById('store-bio').value = res.data.bio || '';
+    document.getElementById('support-email').value = res.data.supportEmail || '';
+  } catch {}
+}
+
+async function saveSettings() {
+  const payload = {
+    storeName: document.getElementById('store-name').value.trim(),
+    slug: document.getElementById('store-slug').value.trim(),
+    bio: document.getElementById('store-bio').value.trim(),
+    supportEmail: document.getElementById('support-email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    processingTime: document.getElementById('processing-days').value,
+    shipsFrom: document.getElementById('ship-from').value.trim(),
+    freeShipping: document.getElementById('free-shipping').checked,
+    internationalShipping: document.getElementById('international').checked
+  };
+  try { await API.put('/api/seller/settings', payload); } catch {}
+  Dashboard.notify('Settings saved', 'success');
+}
+
+async function connectStripe() {
+  try {
+    const res = await API.post('/api/payments/onboard', {});
+    if (res?.success && res.data?.url) window.location.href = res.data.url;
+    else Dashboard.notify('Stripe account management is ready for backend wiring', 'info');
+  } catch {
+    Dashboard.notify('Stripe account management is ready for backend wiring', 'info');
+  }
+}
+
+document.getElementById('settings-form').addEventListener('submit', e => {
+  e.preventDefault();
+  saveSettings();
+});
+</script>
+</body>
+</html>

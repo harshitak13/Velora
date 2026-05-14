@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Disputes - Velora Market</title>
+<meta name="description" content="Review marketplace disputes, refunds, buyer claims, and seller evidence.">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/dashboard.css">
+<link rel="stylesheet" href="../../css/animations.css">
+</head>
+<body>
+<div class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="dashboard-brand"><a href="../index.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><span class="logo-text">Velora<span>Admin</span></span></a></div>
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-label">Admin</div>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+      <a href="users.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Users</a>
+      <a href="vendors.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>Vendors</a>
+      <a href="disputes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 01-4 4H7l-4 4V7a4 4 0 014-4h10a4 4 0 014 4z"/></svg>Disputes</a>
+    </nav>
+    <div class="dashboard-sidebar-footer"><button class="btn btn-ghost btn-full" onclick="Auth.logout()">Sign out</button></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-topbar">
+      <button class="btn btn-secondary btn-icon dashboard-menu-btn" data-sidebar-toggle aria-label="Open menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      <div><div class="text-xs text-sec font-semibold">Risk and support</div><div class="font-bold" data-dashboard-user-name>Velora Admin</div></div>
+      <div class="nav-actions"><button class="btn btn-secondary btn-sm" onclick="Dashboard.notify('Dispute report queued', 'success')">Export report</button></div>
+    </header>
+
+    <section class="dashboard-content">
+      <div class="dashboard-page-header">
+        <div>
+          <h1>Disputes</h1>
+          <p>Resolve buyer claims, refunds, chargebacks, and seller evidence reviews.</p>
+        </div>
+        <div class="dashboard-actions">
+          <button class="btn btn-secondary" onclick="assignSelected()">Assign selected</button>
+          <button class="btn btn-primary" onclick="resolveSelected()">Resolve selected</button>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">Open cases</div><div class="metric-value" id="metric-open">0</div><div class="metric-note down">Require response</div></div>
+        <div class="metric-card"><div class="metric-label">In review</div><div class="metric-value" id="metric-review">0</div><div class="metric-note">Evidence pending</div></div>
+        <div class="metric-card"><div class="metric-label">Refund exposure</div><div class="metric-value" id="metric-exposure">₹0.00</div><div class="metric-note">Open case value</div></div>
+        <div class="metric-card"><div class="metric-label">Resolved</div><div class="metric-value" id="metric-resolved">0</div><div class="metric-note up">Last 30 days</div></div>
+      </div>
+
+      <div class="dashboard-grid cols-2">
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Priority queue</h2></div>
+          <div class="panel-body"><div class="mini-list" id="priority-list"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Resolution mix</h2></div>
+          <div class="panel-body">
+            <div class="mini-list">
+              <div><div class="d-flex justify-between mb-4"><span class="font-semibold">Refunded to buyer</span><span class="font-mono">0%</span></div><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div></div>
+              <div><div class="d-flex justify-between mb-4"><span class="font-semibold">Seller protected</span><span class="font-mono">0%</span></div><div class="progress-track"><div class="progress-fill" style="width:0%;background:var(--color-success)"></div></div></div>
+              <div><div class="d-flex justify-between mb-4"><span class="font-semibold">Partial refund</span><span class="font-mono">0%</span></div><div class="progress-track"><div class="progress-fill" style="width:0%;background:var(--color-warning)"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-6">
+        <div class="panel-header">
+          <h2 class="panel-title">Dispute cases</h2>
+          <select class="form-select" id="dispute-filter" onchange="renderDisputes()">
+            <option value="all">All status</option>
+            <option value="OPEN">Open</option>
+            <option value="REVIEW">Review</option>
+            <option value="RESOLVED">Resolved</option>
+          </select>
+        </div>
+        <div class="panel-body">
+          <div class="toolbar">
+            <div class="toolbar-left"><label class="checkbox-group"><input type="checkbox" onchange="toggleSelectAll(this.checked)">Select all</label></div>
+            <div class="toolbar-right"><div class="search-field"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input id="dispute-search" type="search" placeholder="Search cases"></div></div>
+          </div>
+          <div class="table-wrap">
+            <table id="disputes-table">
+              <thead><tr><th></th><th>Case</th><th>Buyer</th><th>Vendor</th><th>Reason</th><th>Status</th><th>Amount</th><th>Actions</th></tr></thead>
+              <tbody id="disputes-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-overlay" id="dispute-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h3>Dispute case</h3><button class="modal-close" onclick="closeDisputeModal()" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body" id="dispute-modal-body"></div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeDisputeModal()">Close</button><button class="btn btn-primary" onclick="saveDisputeModal()">Save decision</button></div>
+  </div>
+</div>
+
+<div class="mobile-sidebar-overlay" data-sidebar-close></div>
+<div class="toast-container" id="toast-container"></div>
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/notifications.js"></script>
+<script src="../../js/dashboard/dashboard.js"></script>
+<script>
+let disputes = [];
+let activeDisputeId = null;
+const fallback = [];
+
+if (Dashboard.init('ADMIN')) {
+  loadDisputes();
+  Dashboard.bindTableSearch('dispute-search', 'disputes-table');
+}
+
+async function loadDisputes() {
+  try {
+    const res = await API.get('/api/admin/disputes');
+    disputes = res?.success ? res.data : fallback;
+  } catch {
+    disputes = fallback;
+  }
+  renderDisputes();
+}
+
+function renderDisputes() {
+  const filter = document.getElementById('dispute-filter').value;
+  const rows = disputes.filter(d => filter === 'all' || d.status === filter);
+  document.getElementById('disputes-body').innerHTML = rows.length ? rows.map(d => `
+    <tr>
+      <td><input type="checkbox" class="dispute-check" value="${d.id}"></td>
+      <td><div class="font-mono font-semibold">${d.id}</div><div class="text-xs text-sec">${Dashboard.date(d.openedAt)} - ${d.priority}</div></td>
+      <td>${d.buyer}</td>
+      <td>${d.vendor}</td>
+      <td>${d.reason}</td>
+      <td>${Dashboard.statusBadge(d.status)}</td>
+      <td class="font-mono">${Dashboard.money(d.amount)}</td>
+      <td><div class="table-actions"><button class="btn btn-secondary btn-sm" onclick="openDisputeModal('${d.id}')">Review</button><button class="btn btn-ghost btn-sm" onclick="resolveDispute('${d.id}')">Resolve</button></div></td>
+    </tr>
+  `).join('') : '<tr><td colspan="8" class="text-sec">No manually raised disputes yet.</td></tr>';
+  renderPriority();
+  renderMetrics();
+}
+
+function renderPriority() {
+  const priority = disputes.filter(d => d.status !== 'RESOLVED').sort((a, b) => a.priority === 'High' ? -1 : 1).slice(0, 4);
+  document.getElementById('priority-list').innerHTML = priority.length ? priority.map(d => `
+    <button class="mini-list-row" onclick="openDisputeModal('${d.id}')">
+      <div><div class="row-title">${d.reason}</div><div class="row-subtitle">${d.id} - ${d.buyer} vs ${d.vendor}</div></div>
+      <span class="badge ${d.priority === 'High' ? 'badge-error' : 'badge-warning'}">${d.priority}</span>
+    </button>
+  `).join('') : '<div class="mini-list-row"><div><div class="row-title">No priority disputes</div><div class="row-subtitle">Only manually raised disputes will appear here.</div></div></div>';
+}
+
+function renderMetrics() {
+  Dashboard.setMetric('metric-open', disputes.filter(d => d.status === 'OPEN').length);
+  Dashboard.setMetric('metric-review', disputes.filter(d => d.status === 'REVIEW').length);
+  Dashboard.setMetric('metric-exposure', Dashboard.money(disputes.filter(d => d.status !== 'RESOLVED').reduce((sum, d) => sum + d.amount, 0)));
+  Dashboard.setMetric('metric-resolved', disputes.filter(d => d.status === 'RESOLVED').length);
+}
+
+function selectedIds() {
+  return [...document.querySelectorAll('.dispute-check:checked')].map(el => el.value);
+}
+
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.dispute-check').forEach(el => el.checked = checked);
+}
+
+function openDisputeModal(id) {
+  const d = disputes.find(item => item.id === id);
+  if (!d) return;
+  activeDisputeId = id;
+  document.getElementById('dispute-modal-body').innerHTML = `
+    <div class="form-grid-2">
+      <div><div class="text-xs text-sec font-semibold">Case</div><div class="font-mono font-bold">${d.id}</div></div>
+      <div><div class="text-xs text-sec font-semibold">Amount</div><div class="font-mono font-bold">${Dashboard.money(d.amount)}</div></div>
+    </div>
+    <div class="settings-section mt-4">
+      <div class="settings-section-header">Claim</div>
+      <div class="settings-section-body">
+        <div class="mini-list">
+          <div class="mini-list-row"><div><div class="row-title">Buyer</div><div class="row-subtitle">${d.buyer}</div></div></div>
+          <div class="mini-list-row"><div><div class="row-title">Vendor</div><div class="row-subtitle">${d.vendor}</div></div></div>
+          <div class="mini-list-row"><div><div class="row-title">Reason</div><div class="row-subtitle">${d.reason}</div></div>${Dashboard.statusBadge(d.status)}</div>
+        </div>
+        <div class="form-group mt-4"><label class="form-label">Case notes</label><textarea id="modal-notes" class="form-textarea">${d.notes || ''}</textarea></div>
+        <div class="form-group"><label class="form-label">Decision</label><select id="modal-status" class="form-select"><option>OPEN</option><option>REVIEW</option><option>RESOLVED</option><option>REFUNDED</option></select></div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-status').value = d.status;
+  document.getElementById('dispute-modal').classList.add('open');
+}
+
+function closeDisputeModal() {
+  document.getElementById('dispute-modal').classList.remove('open');
+  activeDisputeId = null;
+}
+
+function saveDisputeModal() {
+  const status = document.getElementById('modal-status').value;
+  const notes = document.getElementById('modal-notes').value.trim();
+  const id = activeDisputeId;
+  disputes = disputes.map(d => d.id === activeDisputeId ? { ...d, status, notes } : d);
+  renderDisputes();
+  API.patch('/api/admin/disputes', { id, status }).catch(()=>{});
+  closeDisputeModal();
+  Dashboard.notify('Dispute updated', 'success');
+}
+
+function resolveDispute(id) {
+  disputes = disputes.map(d => d.id === id ? { ...d, status: 'RESOLVED' } : d);
+  renderDisputes();
+  Dashboard.notify('Dispute resolved', 'success');
+  API.patch('/api/admin/disputes', { id, status: 'RESOLVED' }).catch(()=>{});
+}
+
+function assignSelected() {
+  Dashboard.notify(selectedIds().length ? 'Cases assigned to your queue' : 'Select cases first', selectedIds().length ? 'success' : 'warning');
+}
+
+function resolveSelected() {
+  const ids = selectedIds();
+  if (!ids.length) return Dashboard.notify('Select cases first', 'warning');
+  disputes = disputes.map(d => ids.includes(d.id) ? { ...d, status: 'RESOLVED' } : d);
+  renderDisputes();
+  Dashboard.notify('Selected disputes resolved', 'success');
+  API.patch('/api/admin/disputes', { ids, status: 'RESOLVED' }).catch(()=>{});
+}
+</script>
+</body>
+</html>

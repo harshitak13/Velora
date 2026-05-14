@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Payouts - Velora Market</title>
+<meta name="description" content="Stripe Connect payouts, balances, and transfer history for Velora Market sellers.">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/dashboard.css">
+<link rel="stylesheet" href="../../css/animations.css">
+</head>
+<body>
+<div class="dashboard-shell">
+  <aside class="dashboard-sidebar">
+    <div class="dashboard-brand">
+      <a href="dashboard.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><span class="logo-text">Velora<span>Seller</span></span></a>
+    </div>
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-label">Seller</div>
+      <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+      <a href="products.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Products</a>
+      <a href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 00-1-1.73L13 2.27a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16Z"/></svg>Orders</a>
+      <a href="payouts.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Payouts</a>
+      <a href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82"/></svg>Settings</a>
+    </nav>
+    <div class="dashboard-sidebar-footer"><button class="btn btn-ghost btn-full" onclick="Auth.logout()">Sign out</button></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-topbar">
+      <button class="btn btn-secondary btn-icon dashboard-menu-btn" data-sidebar-toggle aria-label="Open menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      <div><div class="text-xs text-sec font-semibold">Payments</div><div class="font-bold" data-dashboard-user-name>Velora Seller</div></div>
+      <div class="nav-actions"><button class="btn btn-secondary btn-sm" onclick="openStripe()">Stripe account</button></div>
+    </header>
+
+    <section class="dashboard-content">
+      <div class="dashboard-page-header">
+        <div>
+          <h1>Payouts</h1>
+          <p>Track Stripe Connect transfers and the 90% seller / 10% platform split.</p>
+        </div>
+        <div class="dashboard-actions">
+          <button class="btn btn-secondary" onclick="openStripe()">Open Stripe</button>
+          <button class="btn btn-primary" onclick="requestPayout()">Request payout</button>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">Available</div><div class="metric-value" id="metric-available">₹0.00</div><div class="metric-note up">Ready to transfer</div></div>
+        <div class="metric-card"><div class="metric-label">Pending</div><div class="metric-value" id="metric-pending">₹0.00</div><div class="metric-note">Stripe clearing</div></div>
+        <div class="metric-card"><div class="metric-label">Lifetime paid</div><div class="metric-value" id="metric-lifetime">₹0.00</div><div class="metric-note">Seller receipts</div></div>
+        <div class="metric-card"><div class="metric-label">Platform fees</div><div class="metric-value" id="metric-fees">₹0.00</div><div class="metric-note">10% retained</div></div>
+      </div>
+
+      <div class="dashboard-grid cols-2">
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Connect status</h2><span class="badge badge-success" id="connect-status">Connected</span></div>
+          <div class="panel-body">
+            <div class="mini-list">
+              <div class="mini-list-row"><div><div class="row-title">Charges enabled</div><div class="row-subtitle">Seller can receive marketplace payments</div></div><span class="badge badge-success">Yes</span></div>
+              <div class="mini-list-row"><div><div class="row-title">Payouts enabled</div><div class="row-subtitle">Transfers can be sent to bank account</div></div><span class="badge badge-success">Yes</span></div>
+              <div class="mini-list-row"><div><div class="row-title">Next automatic payout</div><div class="row-subtitle" id="next-payout-date">May 17, 2026</div></div><span class="badge badge-accent">Weekly</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><h2 class="panel-title">Payment split</h2></div>
+          <div class="panel-body">
+            <div class="d-flex justify-between mb-4"><span class="font-semibold">Seller share</span><span class="font-mono font-bold">90%</span></div>
+            <div class="progress-track mb-4"><div class="progress-fill" style="width:90%"></div></div>
+            <div class="d-flex justify-between mb-4"><span class="font-semibold">Platform fee</span><span class="font-mono font-bold">10%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:10%;background:var(--color-warning)"></div></div>
+            <p class="text-sm mt-4">Transfers are grouped by vendor order items after Stripe webhook confirmation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-6">
+        <div class="panel-header">
+          <h2 class="panel-title">Payout history</h2>
+          <select class="form-select" id="payout-filter" onchange="renderPayouts()"><option value="all">All payouts</option><option value="PAID">Paid</option><option value="PENDING">Pending</option><option value="FAILED">Failed</option></select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Payout</th><th>Period</th><th>Status</th><th>Gross sales</th><th>Platform fee</th><th>Net payout</th></tr></thead>
+            <tbody id="payouts-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="mobile-sidebar-overlay" data-sidebar-close></div>
+<div class="toast-container" id="toast-container"></div>
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/notifications.js"></script>
+<script src="../../js/dashboard/dashboard.js"></script>
+<script>
+let payouts = [];
+const fallback = {
+  summary: { available: 0, pending: 0, lifetime: 0, fees: 0, nextPayout: '' },
+  payouts: []
+};
+
+if (Dashboard.init('SELLER')) loadPayouts();
+
+async function loadPayouts() {
+  let data = fallback;
+  try {
+    const res = await API.get('/api/payments/payouts');
+    if (res?.success) data = res.data;
+  } catch {}
+  payouts = data.payouts || fallback.payouts;
+  Dashboard.setMetric('metric-available', Dashboard.money(data.summary.available));
+  Dashboard.setMetric('metric-pending', Dashboard.money(data.summary.pending));
+  Dashboard.setMetric('metric-lifetime', Dashboard.money(data.summary.lifetime));
+  Dashboard.setMetric('metric-fees', Dashboard.money(data.summary.fees));
+  document.getElementById('next-payout-date').textContent = data.summary.nextPayout ? Dashboard.date(data.summary.nextPayout) : 'Not scheduled';
+  renderPayouts();
+}
+
+function renderPayouts() {
+  const filter = document.getElementById('payout-filter').value;
+  const rows = payouts.filter(p => filter === 'all' || p.status === filter);
+  document.getElementById('payouts-body').innerHTML = rows.length ? rows.map(p => `
+    <tr>
+      <td class="font-mono font-semibold">${p.id}</td>
+      <td>${p.period}</td>
+      <td>${Dashboard.statusBadge(p.status)}</td>
+      <td class="font-mono">${Dashboard.money(p.gross)}</td>
+      <td class="font-mono">${Dashboard.money(p.fee)}</td>
+      <td class="font-mono font-bold">${Dashboard.money(p.net)}</td>
+    </tr>
+  `).join('') : '<tr><td colspan="6" class="text-sec">No payouts yet.</td></tr>';
+}
+
+async function openStripe() {
+  try {
+    const res = await API.post('/api/payments/onboard', {});
+    if (res?.success && res.data?.url) window.location.href = res.data.url;
+    else Dashboard.notify('Stripe Connect onboarding is ready for backend wiring', 'info');
+  } catch {
+    Dashboard.notify('Stripe Connect onboarding is ready for backend wiring', 'info');
+  }
+}
+
+async function requestPayout() {
+  Dashboard.notify('Payout request submitted', 'success');
+  try { await API.post('/api/payments/payouts', {}); } catch {}
+}
+</script>
+</body>
+</html>

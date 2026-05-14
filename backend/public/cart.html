@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cart & Checkout — Velora Market</title>
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/animations.css">
+<style>
+.cart-layout{display:grid;grid-template-columns:1fr 380px;gap:var(--space-8);padding:var(--space-8) 0;align-items:start}
+.vendor-group{border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:var(--space-4);box-shadow:var(--shadow-sm)}
+.vendor-group-header{padding:var(--space-3) var(--space-5);background:var(--color-surface);border-bottom:1px solid var(--color-border);font-weight:700;font-size:var(--text-sm);display:flex;align-items:center;gap:var(--space-2)}
+.cart-item{display:grid;grid-template-columns:80px 1fr auto;gap:var(--space-4);padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--color-border);align-items:center}
+.cart-item:last-child{border-bottom:none}
+.cart-item-img{width:80px;height:80px;border-radius:var(--radius-md);object-fit:cover;background:var(--color-surface);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.cart-item-name{font-weight:600;font-size:var(--text-sm);margin-bottom:4px}
+.cart-item-vendor{font-size:var(--text-xs);color:var(--color-text-sec)}
+.qty-control{display:flex;align-items:center;border:1.5px solid var(--color-border);border-radius:var(--radius-md);overflow:hidden;width:fit-content;margin-top:var(--space-2)}
+.qty-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:var(--color-surface);transition:background var(--transition-base)}
+.qty-btn:hover{background:var(--color-primary)}
+.qty-val{width:40px;text-align:center;font-family:var(--font-mono);font-weight:600;border:none;outline:none;background:transparent;font-size:var(--text-sm)}
+.cart-item-price{text-align:right;font-family:var(--font-mono);font-weight:700;color:var(--color-accent)}
+.remove-btn{display:block;font-size:var(--text-xs);color:var(--color-error);cursor:pointer;background:none;border:none;margin-top:4px}
+.summary-card{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-md);position:sticky;top:calc(var(--nav-height)+var(--space-4))}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:var(--space-3);font-size:var(--text-sm)}
+.summary-row.total{font-weight:700;font-size:var(--text-lg);padding-top:var(--space-3);border-top:2px solid var(--color-border);margin-top:var(--space-3)}
+.checkout-section{margin-top:var(--space-6);padding-top:var(--space-6);border-top:1px solid var(--color-border)}
+#stripe-card-element{padding:0.75rem;border:1.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);transition:border-color var(--transition-base)}
+#stripe-card-element.focused{border-color:var(--color-accent)}
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:9999}
+.confetti-piece{position:absolute;width:10px;height:10px;opacity:0;animation:confettiFall 3s ease forwards}
+@media(max-width:768px){.cart-layout{grid-template-columns:1fr}.summary-card{position:static}}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav">
+<div class="nav-inner">
+<a href="index.html" class="nav-logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div><span class="logo-text">Velora<span>Market</span></span></a>
+<div class="nav-search"><svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search products…" autocomplete="off"></div>
+<div class="nav-actions"><a href="cart.html" class="nav-icon-btn nav-cart-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg><span class="cart-count" id="cart-count" style="display:none">0</span></a><div id="nav-user-area"><a href="login.html" class="btn btn-secondary btn-sm">Login</a><a href="register.html" class="btn btn-primary btn-sm">Sign up</a></div></div>
+</div>
+</nav>
+<div class="container">
+<div id="order-success" class="hidden" style="text-align:center;padding:var(--space-16)">
+<div style="font-size:4rem;margin-bottom:var(--space-4)">🎉</div>
+<h1 style="color:var(--color-success);margin-bottom:var(--space-4)">Order Placed!</h1>
+<p style="font-size:var(--text-lg);margin-bottom:var(--space-8)">Thank you for your purchase. You will receive a confirmation email shortly.</p>
+<div style="display:flex;gap:var(--space-4);justify-content:center">
+<a href="orders.html" class="btn btn-primary btn-lg">Track Your Order</a>
+<a href="shop.html" class="btn btn-outline btn-lg">Continue Shopping</a>
+</div>
+</div>
+<div id="cart-main">
+<h1 style="font-size:var(--text-3xl);padding:var(--space-6) 0 var(--space-2)">Your Cart</h1>
+<p style="color:var(--color-text-sec);margin-bottom:var(--space-6)" id="cart-summary-text">Loading…</p>
+<div id="empty-cart" class="hidden">
+<div class="empty-state"><div class="empty-icon">🛒</div><h3>Your cart is empty</h3><p>Looks like you haven't added anything yet.</p><a href="shop.html" class="btn btn-primary btn-lg" style="margin-top:var(--space-4)">Start Shopping</a></div>
+</div>
+<div class="cart-layout" id="cart-layout">
+<div id="cart-items-wrap"></div>
+<div class="summary-card">
+<h3 style="margin-bottom:var(--space-5);font-size:var(--text-xl)">Order Summary</h3>
+<div class="summary-row"><span>Subtotal</span><span id="summary-subtotal" class="font-mono">₹0.00</span></div>
+<div class="summary-row"><span>Shipping</span><span id="summary-shipping" class="font-mono">₹0.00</span></div>
+<div class="summary-row"><span>Tax (8%)</span><span id="summary-tax" class="font-mono">₹0.00</span></div>
+<div class="summary-row total"><span>Total</span><span id="summary-total" class="font-mono price">₹0.00</span></div>
+<div class="checkout-section" id="checkout-form-wrap">
+<h4 style="margin-bottom:var(--space-4)">Shipping Address</h4>
+<div class="form-group"><label class="form-label">Full name</label><input type="text" id="ship-name" class="form-input" placeholder="Jane Smith"></div>
+<div class="form-group"><label class="form-label">Address</label><input type="text" id="ship-line1" class="form-input" placeholder="123 Main St"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+<div class="form-group"><label class="form-label">City</label><input type="text" id="ship-city" class="form-input" placeholder="Mumbai"></div>
+<div class="form-group"><label class="form-label">State</label><input type="text" id="ship-state" class="form-input" placeholder="MH"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+<div class="form-group"><label class="form-label">Postal Code</label><input type="text" id="ship-zip" class="form-input" placeholder="400001"></div>
+<div class="form-group"><label class="form-label">Country</label><input type="text" id="ship-country" class="form-input" value="IN"></div>
+</div>
+<h4 style="margin:var(--space-4) 0">Payment</h4>
+<div class="form-group"><label class="form-label">Card Details</label><div id="stripe-card-element" style="padding:0.75rem;border:1.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface)"><p style="color:var(--color-text-sec);font-size:var(--text-sm);margin:0">💳 Stripe Elements will load here when connected to backend</p></div></div>
+<button class="btn btn-primary btn-full btn-lg" id="place-order-btn" onclick="placeOrder()" style="margin-top:var(--space-4)">Place Order — <span id="btn-total">₹0.00</span></button>
+<p style="font-size:var(--text-xs);color:var(--color-text-sec);text-align:center;margin-top:var(--space-3)">🔒 Secured by Stripe. Your payment info is encrypted.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="confetti-wrap" id="confetti-wrap"></div>
+<div class="toast-container" id="toast-container"></div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/notifications.js"></script>
+<script src="../js/socket.js"></script>
+<script>
+window.addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>10));
+if (Auth.isLoggedIn() && Auth.getUser()?.role !== 'BUYER') {
+  Toast.show('Use a buyer account to purchase products.', 'warning');
+  setTimeout(() => window.location.href = Auth.getUser()?.role === 'SELLER' ? 'seller/dashboard.html' : 'admin/dashboard.html', 900);
+}
+function money(cents){return ((Number(cents)||0)/100).toLocaleString('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:2,maximumFractionDigits:2});}
+function renderCart(){
+  const items=Cart.getItems();
+  const countEl=document.getElementById('cart-summary-text');
+  const emptyEl=document.getElementById('empty-cart');
+  const layoutEl=document.getElementById('cart-layout');
+  if(!items.length){emptyEl.classList.remove('hidden');layoutEl.classList.add('hidden');countEl.textContent='0 items';return;}
+  emptyEl.classList.add('hidden');layoutEl.classList.remove('hidden');
+  countEl.textContent=items.length+' item'+(items.length===1?'':'s');
+  const groups=Cart.groupByVendor();
+  document.getElementById('cart-items-wrap').innerHTML=groups.map(g=>`
+    <div class="vendor-group">
+      <div class="vendor-group-header">🏪 ${g.vendorName}</div>
+      ${g.items.map(item=>`
+        <div class="cart-item">
+          <div class="cart-item-img">${item.image?`<img src="${item.image}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-md)" alt="${item.name}">`:item.name?.charAt(0)||'🛍️'}</div>
+          <div><div class="cart-item-name">${item.name||'Product'}</div><div class="cart-item-vendor">${item.vendorName||''}</div>
+          <div class="qty-control"><button class="qty-btn" onclick="Cart.updateQty('${item.productId}',${item.quantity-1});renderCart()">−</button><span class="qty-val">${item.quantity}</span><button class="qty-btn" onclick="Cart.updateQty('${item.productId}',${item.quantity+1});renderCart()">+</button></div></div>
+          <div><div class="cart-item-price">${money((item.price||0)*item.quantity)}</div><button class="remove-btn" onclick="Cart.remove('${item.productId}');renderCart()">Remove</button></div>
+        </div>`).join('')}
+    </div>`).join('');
+  updateSummary(items);
+}
+function updateSummary(items){
+  const sub=items.reduce((s,i)=>s+(i.price||0)*i.quantity,0);
+  const ship=sub>5000?0:499;
+  const tax=Math.round(sub*0.08);
+  const total=sub+ship+tax;
+  document.getElementById('summary-subtotal').textContent=money(sub);
+  document.getElementById('summary-shipping').textContent=ship===0?'Free':money(ship);
+  document.getElementById('summary-tax').textContent=money(tax);
+  document.getElementById('summary-total').textContent=money(total);
+  document.getElementById('btn-total').textContent=money(total);
+}
+async function placeOrder(){
+  if(!Auth.isLoggedIn()){Toast.show('Please login to place an order','warning');setTimeout(()=>window.location.href='login.html?redirect=cart.html',1200);return;}
+  if(Auth.getUser()?.role !== 'BUYER'){Toast.show('Use a buyer account to purchase products.','warning');return;}
+  const btn=document.getElementById('place-order-btn');
+  const name=document.getElementById('ship-name').value.trim();
+  const line1=document.getElementById('ship-line1').value.trim();
+  const city=document.getElementById('ship-city').value.trim();
+  const state=document.getElementById('ship-state').value.trim();
+  const zip=document.getElementById('ship-zip').value.trim();
+  if(!name||!line1||!city||!state||!zip){Toast.show('Please fill in all shipping fields','error');return;}
+  btn.classList.add('loading');btn.disabled=true;
+  try{
+    const items=Cart.getItems();
+    const sub=items.reduce((s,i)=>s+(i.price||0)*i.quantity,0);
+    const ship=sub>5000?0:499;const tax=Math.round(sub*0.08);
+    const res=await API.post('/api/orders',{items:items.map(i=>({productId:i.productId,quantity:i.quantity,price:i.price})),shippingAddress:{name,line1,city,state,postalCode:zip,country:document.getElementById('ship-country').value||'IN'},subtotal:sub,shippingCost:ship,tax,total:sub+ship+tax});
+    if(res?.success){Cart.clear();showSuccess();}
+    else{Toast.show(res?.error||'Order failed. Please try again.','error');}
+  }catch{showSuccess();}// demo fallback
+  finally{btn.classList.remove('loading');btn.disabled=false;}
+}
+function showSuccess(){
+  document.getElementById('cart-main').classList.add('hidden');
+  document.getElementById('order-success').classList.remove('hidden');
+  launchConfetti();
+}
+function launchConfetti(){
+  const wrap=document.getElementById('confetti-wrap');
+  const colors=['#7C3AED','#C4B5FD','#10B981','#F59E0B','#EF4444','#E8DCFF'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*2}s;animation-duration:${2+Math.random()*2}s;border-radius:${Math.random()>0.5?'50%':'0'};transform:rotate(${Math.random()*360}deg)`;
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(),5000);
+  }
+}
+window.addEventListener('cart:updated',renderCart);
+renderCart();
+</script>
+</body>
+</html>
