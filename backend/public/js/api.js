@@ -1,7 +1,7 @@
 /* ============================================================
    API.JS — Centralized fetch wrapper
    ============================================================ */
-const API_BASE = window.API_BASE_URL || 'http://localhost:3000';
+const API_BASE = window.API_BASE_URL || window.location.origin;
 
 const API = {
   async request(method, path, body = null, opts = {}) {

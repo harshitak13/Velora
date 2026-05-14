@@ -3,7 +3,7 @@
    ============================================================ */
 const SocketClient = (() => {
   let socket = null;
-  const SOCKET_URL = window.SOCKET_URL || 'http://localhost:3000';
+  const SOCKET_URL = window.SOCKET_URL || window.location.origin;
 
   function money(cents) {
     return ((Number(cents) || 0) / 100).toLocaleString('en-IN', {

@@ -50,7 +50,7 @@ const Auth = (() => {
   }
 
   async function postJson(path, payload) {
-    const base = window.API_BASE_URL || 'http://localhost:3000';
+    const base = window.API_BASE_URL || window.location.origin;
     let res;
     try {
       res = await fetch(`${base}${path}`, {
@@ -60,7 +60,7 @@ const Auth = (() => {
         body: JSON.stringify(payload)
       });
     } catch (err) {
-      throw new Error(`Could not reach backend at ${base}. Make sure npm run dev is running in /backend.`);
+      throw new Error(`Could not reach backend at ${base}. Please try again later.`);
     }
 
     const text = await res.text();
@@ -76,7 +76,7 @@ const Auth = (() => {
 
   async function refresh() {
     try {
-      const res = await fetch(`${window.API_BASE_URL || 'http://localhost:3000'}/api/auth/refresh`, {
+      const res = await fetch(`${window.API_BASE_URL || window.location.origin}/api/auth/refresh`, {
         method: 'POST', credentials: 'include'
       });
       const data = await res.json();
@@ -90,7 +90,7 @@ const Auth = (() => {
 
   async function logout() {
     try {
-      await fetch(`${window.API_BASE_URL || 'http://localhost:3000'}/api/auth/logout`, {
+      await fetch(`${window.API_BASE_URL || window.location.origin}/api/auth/logout`, {
         method: 'POST', credentials: 'include',
         headers: { 'Authorization': `Bearer ${getToken()}` }
       });
