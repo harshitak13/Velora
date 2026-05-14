@@ -16,6 +16,9 @@ export async function connectMongo() {
     globalMongo.__veloraMongoPromise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
       dbName: process.env.MONGODB_DB || "velora_market",
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+      socketTimeoutMS: 10000,
     });
   }
   return globalMongo.__veloraMongoPromise;

@@ -19,7 +19,10 @@ const API = {
     }
 
     try {
-      const res = await fetch(url, config);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch(url, { ...config, signal: controller.signal });
+      clearTimeout(timeoutId);
 
       // Token expired — try refresh
       if (res.status === 401 && Auth) {

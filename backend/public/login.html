@@ -244,7 +244,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     if (result.success) {
       Toast.show('Welcome back!', 'success');
       const user = Auth.getUser();
-      const redirect = new URLSearchParams(window.location.search).get('redirect') || (user?.role === 'ADMIN' ? 'admin/dashboard.html' : user?.role === 'SELLER' ? 'seller/dashboard.html' : 'index.html');
+      const redirect = new URLSearchParams(window.location.search).get('redirect') || (user?.role === 'ADMIN' ? 'admin/dashboard.html' : user?.role === 'SELLER' ? 'shop.html' : 'index.html');
       setTimeout(() => window.location.href = redirect, 600);
     } else {
       errorBanner.textContent = result.error || 'Invalid email or password.';

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -98,7 +98,7 @@
 window.addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',window.scrollY>10));
 if (Auth.isLoggedIn() && Auth.getUser()?.role !== 'BUYER') {
   Toast.show('Use a buyer account to purchase products.', 'warning');
-  setTimeout(() => window.location.href = Auth.getUser()?.role === 'SELLER' ? 'seller/dashboard.html' : 'admin/dashboard.html', 900);
+  setTimeout(() => window.location.href = Auth.getUser()?.role === 'SELLER' ? 'shop.html' : 'admin/dashboard.html', 900);
 }
 function money(cents){return ((Number(cents)||0)/100).toLocaleString('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:2,maximumFractionDigits:2});}
 function renderCart(){

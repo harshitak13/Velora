@@ -137,7 +137,7 @@ const Auth = (() => {
             <div style="font-weight:600;font-size:var(--text-sm)">${user.name}</div>
             <div style="font-size:var(--text-xs);color:var(--color-text-sec)">${user.email}</div>
           </div>
-          ${user.role === 'SELLER' ? `<a href="${appPath('seller/dashboard.html')}" class="dropdown-item">Seller Dashboard</a>` : ''}
+          ${user.role === 'SELLER' ? `<a href="${appPath('shop.html')}" class="dropdown-item">Seller Dashboard</a>` : ''}
           ${user.role === 'ADMIN'  ? `<a href="${appPath('admin/dashboard.html')}"  class="dropdown-item">Admin Panel</a>` : ''}
           ${user.role === 'BUYER' ? `<a href="${appPath('orders.html')}" class="dropdown-item">My Orders</a>` : ''}
           <a href="${appPath('notifications.html')}" class="dropdown-item">Notifications</a>

@@ -203,7 +203,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
     const result = await Auth.register({ name, email, password, role, storeName: role === 'SELLER' ? storeName : undefined });
     if (result.success) {
       Toast.show('Account created! Welcome to Velora Market.', 'success');
-      setTimeout(() => window.location.href = role === 'SELLER' ? 'seller/dashboard.html' : 'index.html', 800);
+      setTimeout(() => window.location.href = role === 'SELLER' ? 'shop.html' : 'index.html', 800);
     } else {
       errorBanner.textContent = result.error || 'Registration failed. Please try again.';
       errorBanner.classList.remove('hidden');
