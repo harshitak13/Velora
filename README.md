@@ -1,6 +1,6 @@
 # Velora Market - Multi-vendor Marketplace
 
-Live Link: [Add your live website link here](https://your-live-link.vercel.app)
+Live Link: [https://velora-three-virid.vercel.app/]([https://velora-three-virid.vercel.app/])
 
 Velora Market is a full-stack multi-vendor marketplace website for independent sellers and buyers. The project includes a public shopping experience, product browsing, cart and order flows, seller dashboards, admin management screens, authentication, notifications, product uploads, and API routes for marketplace data.
 
